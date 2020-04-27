@@ -81,10 +81,7 @@ class FileStorage:
         """ Function to return a count of all objects """
         obj_count = 0
         if cls is not None:
-            for key, value in self.__objects.items():
-                if value.__class__.__name__ == cls.__name__:
-                    obj_count += 1
+            obj_count = len(self.all(cls))
         else:
-            for entry in self.__objects:
-                obj_count += 1
+            obj_count = len(self.__objects)
         return obj_count
