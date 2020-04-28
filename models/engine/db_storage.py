@@ -89,7 +89,7 @@ class DBStorage:
                 for obj in objs:
                     total += 1
         else:
-            objs = self.__session.query(classes[cls.__name__]).all()
+            objs = self.__session.query(cls).all()
             for obj in objs:
                 total += 1
         return total
