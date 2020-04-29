@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+''' Serve amenities '''
+
 from flask import Flask, jsonify, abort, request, make_response
 from api.v1.views import app_views
 from models import storage
@@ -5,7 +8,7 @@ from models.amenity import Amenity
 
 
 @app_views.route("/amenities", strict_slashes=False, methods=['GET'])
-@app_views.route("/amenities/<amenity_id>", strict_slashes=False, 
+@app_views.route("/amenities/<amenity_id>", strict_slashes=False,
                  methods=['GET'])
 def get_amenities(amenity_id=None):
     """
@@ -27,7 +30,7 @@ def get_amenities(amenity_id=None):
     return jsonify(new_list)
 
 
-@app_views.route("/amenities/<amenity_id>", strict_slashes=False, 
+@app_views.route("/amenities/<amenity_id>", strict_slashes=False,
                  methods=['DELETE'])
 def delete_amenity(amenity_id=None):
     """
@@ -56,7 +59,7 @@ def post_amenities():
     return jsonify(amenity.to_dict()), 201
 
 
-@app_views.route("/amenities/<amenity_id>", strict_slashes=False, 
+@app_views.route("/amenities/<amenity_id>", strict_slashes=False,
                  methods=["PUT"])
 def update_amenity(amenity_id=None):
     """ Update a state object

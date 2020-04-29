@@ -1,3 +1,6 @@
+#!/usr/bin/python
+""" Lists all states """
+
 from flask import Flask, jsonify, abort, request, make_response
 from api.v1.views import app_views
 from models import storage
@@ -26,7 +29,8 @@ def get_states(state_id=None):
     return jsonify(new_list)
 
 
-@app_views.route("/states/<state_id>", strict_slashes=False, methods=['DELETE'])
+@app_views.route("/states/<state_id>", strict_slashes=False,
+                 methods=['DELETE'])
 def delete_state(state_id=None):
     """
     Deletes a state from the database

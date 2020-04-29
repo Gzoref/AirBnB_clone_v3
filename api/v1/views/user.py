@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+""" Serves the users """
+
 from flask import Flask, jsonify, abort, request, make_response
 from api.v1.views import app_views
 from models import storage
@@ -5,7 +8,7 @@ from models.user import User
 
 
 @app_views.route("/users", strict_slashes=False, methods=['GET'])
-@app_views.route("/users/<user_id>", strict_slashes=False, 
+@app_views.route("/users/<user_id>", strict_slashes=False,
                  methods=['GET'])
 def get_users(user_id=None):
     """
@@ -27,7 +30,7 @@ def get_users(user_id=None):
     return jsonify(new_list)
 
 
-@app_views.route("/user/<user_id>", strict_slashes=False, 
+@app_views.route("/user/<user_id>", strict_slashes=False,
                  methods=['DELETE'])
 def delete_user(user_id=None):
     """
@@ -56,7 +59,7 @@ def post_user():
     return jsonify(users.to_dict()), 201
 
 
-@app_views.route("/users/<user_id>", strict_slashes=False, 
+@app_views.route("/users/<user_id>", strict_slashes=False,
                  methods=["PUT"])
 def update_user(users_id=None):
     """ Update a user object

@@ -1,10 +1,14 @@
+#!/usr/bin/python
+''' Serve Cities '''
+
 from flask import Flask, jsonify, abort, request, make_response
 from api.v1.views import app_views
 from models import storage
 from models.state import State
 from models.city import City
 
-@app_views.route("/states/<state_id>/cities", strict_slashes=False, methods=['GET'])
+@app_views.route("/states/<state_id>/cities", strict_slashes=False,
+                 methods=['GET'])
 def get_city(state_id=None):
     """
     Returns list of City objects linked to any State
@@ -19,7 +23,8 @@ def get_city(state_id=None):
     for city in state.cities:
         cities.append(city.to_dict())
     return jsonify(cities)
-    
+
+
 @app_views.route("/cities/<city_id>", strict_slashes=False, methods=['GET'])
 def get_city_id(city_id):
     '''
@@ -29,8 +34,7 @@ def get_city_id(city_id):
     if city_id is None:
         abort(404)
     return jsonify(city.to_dict())
-    
-    
+
 
 @app_views.route("/cities/<city_id>", strict_slashes=False, methods=['DELETE'])
 def delete_city(city_id=None):
@@ -46,7 +50,8 @@ def delete_city(city_id=None):
     return jsonify({}), 200
 
 
-@app_views.route("states/<state_id>/cities", strict_slashes=False, methods=['POST'])
+@app_views.route("states/<state_id>/cities", strict_slashes=False,
+                 methods=['POST'])
 def post_city(state_id=None):
     """
     Post a city
@@ -65,7 +70,7 @@ def post_city(state_id=None):
 
 
 @app_views.route("/cities/<city_id>", strict_slashes=False, methods=["PUT"])
-def update_city (city_id=None):
+def update_city(city_id=None):
     """ Update a state object
     """
     key = "City." + str(city_id)
