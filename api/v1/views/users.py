@@ -23,7 +23,7 @@ def get_users(user_id=None):
         for key, value in objs.items():
             new_list.append(value.to_dict())
     elif key in storage.all(User).keys():
-        new_list.append(storage.all(User)[key].to_dict())
+        return jsonify(storage.all(User)[key].to_dict())
     else:
         abort(404)
     return jsonify(new_list)
@@ -35,12 +35,11 @@ def delete_user(user_id=None):
     """
     Deletes an User from the database
     """
-    if user_id is not None:
-        users = storage.get(User, user_id)
-        users.delete()
-        users.save()
-    else:
+    users = storage.get(User, user_id)
+    if users is None:
         abort(404)
+    users.delete()
+    users.save()
     return jsonify({}), 200
 
 
@@ -50,9 +49,11 @@ def post_user():
     Post a User
     """
     if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
-    if "name" not in request.get_json():
-        return jsonify({"error": "Missing name"}), 400
+        abort(400, "Not a JSON")
+    if "email" not in request.get_json():
+        abort(400, "Missing email")
+    if "password" not in request.get_json():
+        abort(400, "Missing password")
     users = User(**request.get_json())
     users.save()
     return jsonify(users.to_dict()), 201
@@ -67,7 +68,7 @@ def update_user(user_id=None):
     if key not in storage.all(User).keys():
         abort(404)
     if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
+        abort(400, "Not a JSON")
 
     users = storage.get(User, user_id)
     for key, value in request.get_json().items():
