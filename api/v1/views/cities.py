@@ -42,12 +42,11 @@ def delete_city(city_id):
     """
     Deletes a city from the database
     """
-    if city_id is not None:
-        cities = storage.get(City, city_id)
-        cities.delete()
-        storage.save()
-    else:
+    cities = storage.get(City, city_id)
+    if cities is None:
         abort(404)
+    cities.delete()
+    storage.save()
     return jsonify({}), 200
 
 
