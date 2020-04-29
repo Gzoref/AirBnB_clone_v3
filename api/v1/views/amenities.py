@@ -24,7 +24,7 @@ def get_amenities(amenity_id=None):
         for key, value in objs.items():
             new_list.append(value.to_dict())
     elif key in storage.all(Amenity).keys():
-        new_list.append(storage.all(Amenity)[key].to_dict())
+        return jsonify(storage.all(Amenity)[key].to_dict())
     else:
         abort(404)
     return jsonify(new_list)

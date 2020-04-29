@@ -23,7 +23,7 @@ def get_states(state_id=None):
         for key, value in objs.items():
             new_list.append(value.to_dict())
     elif key in storage.all(State).keys():
-        new_list.append(storage.all(State)[key].to_dict())
+        return jsonify(storage.all(State)[key].to_dict())
     else:
         abort(404)
     return jsonify(new_list)
