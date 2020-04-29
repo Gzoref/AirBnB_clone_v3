@@ -50,9 +50,9 @@ def post_states():
     Post a state
     """
     if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
+        return "Not a JSON", 400
     if "name" not in request.get_json():
-        return jsonify({"error": "Missing name"}), 400
+        return "Missing name", 400
     state = State(**request.get_json())
     state.save()
     return jsonify(state.to_dict()), 201
@@ -66,9 +66,11 @@ def update_state(state_id=None):
     if key not in storage.all(State).keys():
         abort(404)
     if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
+        return "Not a JSON", 400
 
     state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
     for key, value in request.get_json().items():
         if key not in ["created_at", "updated_at", "id"]:
             setattr(state, key, value)
