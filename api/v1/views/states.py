@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 """ Lists all states """
 
 from flask import Flask, jsonify, abort, request, make_response
