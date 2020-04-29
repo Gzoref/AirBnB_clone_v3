@@ -36,12 +36,11 @@ def delete_amenity(amenity_id=None):
     """
     Deletes an amenity from the database
     """
-    if amenity_id is not None:
-        state = storage.get(Amenity, amenity_id)
-        state.delete()
-        storage.save()
-    else:
+    state = storage.get(Amenity, amenity_id)
+    if state is None:
         abort(404)
+    state.delete()
+    storage.save()
     return jsonify({}), 200
 
 
