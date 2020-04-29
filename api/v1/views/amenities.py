@@ -49,10 +49,10 @@ def post_amenities():
     """
     Post an amenity
     """
-    if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
+    if request.get_json() is None:
+        abort(400, "Not a JSON")
     if "name" not in request.get_json():
-        return jsonify({"error": "Missing name"}), 400
+        abort(400, "Missing name")
     amenity = Amenity(**request.get_json())
     amenity.save()
     return jsonify(amenity.to_dict()), 201
@@ -66,8 +66,8 @@ def update_amenity(amenity_id=None):
     key = "Amenity." + str(amenity_id)
     if key not in storage.all(Amenity).keys():
         abort(404)
-    if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
+    if request.get_json() is None:
+        abort(400, "Not a JSON")
 
     amenity = storage.get(Amenity, amenity_id)
     for key, value in request.get_json().items():
