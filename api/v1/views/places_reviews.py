@@ -38,7 +38,7 @@ def get_review_id(review_id=None):
 
 @app_views.route("/reviews/<review_id>", strict_slashes=False,
                  methods=['DELETE'])
-def delete_city(review_id=None):
+def delete_review(review_id=None):
     """
     Deletes a review from the database
     """
@@ -52,12 +52,12 @@ def delete_city(review_id=None):
 
 @app_views.route("places/<place_id>/reviews", strict_slashes=False,
                  methods=['POST'])
-def post_city(place_id=None):
+def post_review(place_id=None):
     """
     Post a review
     """
     place_key = "Place." + str(state_id)
-    if palce_key not in storage.all(Place).keys():
+    if place_key not in storage.all(Place).keys():
         abort(404)
     if not request.get_json():
         abort(400, "Not a JSON")
@@ -70,7 +70,7 @@ def post_city(place_id=None):
 
 
 @app_views.route("/reviews/<review_id>", strict_slashes=False, methods=["PUT"])
-def update_city(review_id=None):
+def update_review(review_id=None):
     """ Update a state object
     """
     key = "Review." + str(review_id)
