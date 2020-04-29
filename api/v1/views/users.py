@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """ Serves the users """
-
 from flask import Flask, jsonify, abort, request, make_response
 from api.v1.views import app_views
 from models import storage
@@ -30,7 +29,7 @@ def get_users(user_id=None):
     return jsonify(new_list)
 
 
-@app_views.route("/user/<user_id>", strict_slashes=False,
+@app_views.route("/users/<user_id>", strict_slashes=False,
                  methods=['DELETE'])
 def delete_user(user_id=None):
     """
@@ -45,7 +44,7 @@ def delete_user(user_id=None):
     return jsonify({}), 200
 
 
-@app_views.route("/users/", strict_slashes=False, methods=['POST'])
+@app_views.route("/users", strict_slashes=False, methods=['POST'])
 def post_user():
     """
     Post a User
@@ -55,13 +54,13 @@ def post_user():
     if "name" not in request.get_json():
         return jsonify({"error": "Missing name"}), 400
     users = User(**request.get_json())
-    users.save()
+    storage.save()
     return jsonify(users.to_dict()), 201
 
 
 @app_views.route("/users/<user_id>", strict_slashes=False,
                  methods=["PUT"])
-def update_user(users_id=None):
+def update_user(user_id=None):
     """ Update a user object
     """
     key = "User." + str(user_id)
@@ -72,5 +71,7 @@ def update_user(users_id=None):
 
     users = storage.get(User, user_id)
     for key, value in request.get_json().items():
-        users.save()
+        if key not in ["created_at", "updated_at", "id"]:
+            setattr(users, key, value)
+    users.save()
     return jsonify(users.to_dict()), 200
