@@ -72,7 +72,5 @@ def update_user(users_id=None):
 
     users = storage.get(User, user_id)
     for key, value in request.get_json().items():
-        if key not in ["created_at", "updated_at", "id"]:
-            setattr(users, key, value)
-    users.save()
+        users.save()
     return jsonify(users.to_dict()), 200

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ''' Serve Cities '''
 
 from flask import Flask, jsonify, abort, request, make_response
@@ -6,6 +6,7 @@ from api.v1.views import app_views
 from models import storage
 from models.state import State
 from models.city import City
+
 
 @app_views.route("/states/<state_id>/cities", strict_slashes=False,
                  methods=['GET'])
