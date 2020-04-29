@@ -51,11 +51,15 @@ def post_city(state_id=None):
     """
     Post a city
     """
+    state_key = "State." + str(state_id)
+    if state_key not in storage.all(State).keys():
+        abort(404)
     if not request.get_json():
         return jsonify({"error": "Not a JSON"}), 400
     if "name" not in request.get_json():
         return jsonify({"error": "Missing name"}), 400
     city = City(**request.get_json())
+    city.state_id = state_id
     city.save()
     return jsonify(city.to_dict()), 201
 
