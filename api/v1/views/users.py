@@ -38,7 +38,7 @@ def delete_user(user_id=None):
     if user_id is not None:
         users = storage.get(User, user_id)
         users.delete()
-        storage.save()
+        users.save()
     else:
         abort(404)
     return jsonify({}), 200
@@ -54,7 +54,7 @@ def post_user():
     if "name" not in request.get_json():
         return jsonify({"error": "Missing name"}), 400
     users = User(**request.get_json())
-    storage.save()
+    users.save()
     return jsonify(users.to_dict()), 201
 
 
