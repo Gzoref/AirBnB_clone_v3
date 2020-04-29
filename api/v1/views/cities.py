@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 ''' Serve Cities '''
 
 from flask import Flask, jsonify, abort, request, make_response
