@@ -50,7 +50,7 @@ def post_amenities():
     Post an amenity
     """
     if request.get_json() is None:
-        abort(400, "Obviously Wrong")
+        abort(400, "Not a JSON")
     if "name" not in request.get_json():
         abort(400, "Missing name")
     amenity = Amenity(**request.get_json())
