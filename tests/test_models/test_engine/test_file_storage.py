@@ -120,8 +120,8 @@ class TestFileStorage(unittest.TestCase):
         """"Tests if method retrieves one object"""
         storage = FileStorage()
         self.assertIs(storage.get(User, "Geoff"), None)
-        
-    unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
         """""Test if count method counts number of objects in storage"""
         counter = storage.count()
