@@ -116,7 +116,7 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(json.loads(string), json.loads(js))
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
-    def test_get(self):
+    def test_get_fails(self):
         """"Tests if method retrieves one object"""
         storage = FileStorage()
         self.assertIs(storage.get(User, "Geoff"), None)
@@ -125,9 +125,29 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(storage.get(Amenity, "Not amenity"), None)
         self.assertEqual(storage.get(Place, "Not a palce"), None)
         self.assertEqual(storage.get(City, "State"), None)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get_success(self):
+        """ test for successful object retrival """
+        storage = FileStorage()
         new_state = State()
+        new_city = City()
+        new_user = User()
+        new_review = Review()
+        new_place = Place()
+        new_amenity = Amenity()
         new_state.save()
         self.assertEqual(storage.get(State, new_state.id), new_state)
+        new_city.save()
+        self.assertEqual(storage.get(City, new_city.id), new_city)
+        new_user.save()
+        self.assertEqual(storage.get(User, new_user.id), new_user)
+        new_review.save()
+        self.assertEqual(storage.get(Review, new_review.id), new_review)
+        new_place.save()
+        self.assertEqual(storage.get(Place, new_place.id), new_place)
+        new_amenity.save()
+        self.assertEqual(storage.get(Amenity, new_amenity.id), new_amenity)
 
     @unittest.skipIf(models.storage_t == 'db', "not testing db storage")
     def test_count(self):

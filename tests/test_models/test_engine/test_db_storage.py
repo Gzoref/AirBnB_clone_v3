@@ -90,13 +90,16 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_get(self):
         """"Test if methods retieves one object"""
-        state = State(name='Conencticut')
+        state = State(name="Alabama")
         state.save()
-        self.assertIs(state, models.storage.get(State, state.id))
-        self.assertIsNone(models.storage.get(User, 123454))
-        self.assertIsNone(models.storage.get(Place, 123454))
-        self.assertIsNone(models.storage.get(Review, 123454))
-        self.assertIsNone(models.storage.get(Amenity, 123454))
+        self.assertEqual(models.storage.get(State, state.id), state)
+        self.assertIsNone(models.storage.get(User, "123454"))
+        self.assertIsNone(models.storage.get(Place, "123454"))
+        self.assertIsNone(models.storage.get(Review, "123454"))
+        self.assertIsNone(models.storage.get(City, "12345"))
+        self.assertIsNone(models.storage.get(Amenity, "123454"))
+        self.assertIsNone(models.storage.get(State, "1234356"))
+        state.delete()
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
