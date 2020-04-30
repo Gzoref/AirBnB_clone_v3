@@ -160,7 +160,7 @@ class TestFileStorage(unittest.TestCase):
         new_user = User(email="new@fake.com", password="abc")
         new_user.save()
         self.assertEqual(storage.count(), count + 2)
-        self.assertEqual(storage.count(), int)
+        self.assertIsInstance(storage.count(), int)
         self.assertNotEqual(storage.count(State), 0)
         self.assertIsInstance(storage.count(State), int)
         self.assertNotEqual(storage.count(), None)
