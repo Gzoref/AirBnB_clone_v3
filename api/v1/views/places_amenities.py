@@ -26,7 +26,7 @@ def get_place_amenity(place_id=None):
         for amenity in place.amenities:
             amenity_list.append(amenity.to_dict())
     else:
-        for amenity in place.amenity_id:
+        for amenity in place.amenity_ids:
             amenity_list.append(storage.get(Amenity, amenity).to_dict())
     return jsonify(amenity_list)
 
