@@ -4,6 +4,7 @@
 from flask import Flask, jsonify, abort, request, make_response
 from api.v1.views import app_views
 from models import storage
+from models.user import User
 from models.place import Place
 from models.review import Review
 
@@ -56,13 +57,22 @@ def post_review(place_id=None):
     """
     Post a review
     """
+    req = request.get_json()
     place_key = "Place." + str(state_id)
     if place_key not in storage.all(Place).keys():
         abort(404)
-    if not request.get_json():
+    if not req:
         abort(400, "Not a JSON")
-    if "name" not in request.get_json():
-        abort(400, "Missing name")
+    if "user_id" not in req:
+        abort(400, "Missing user_id")
+
+    user_key = "User." + str(req["user_id"])
+    if user_key not in storage.all(User).keys():
+        abort(404)
+
+    if "text" not in req:
+        abort(400, "Missing text")
+
     review = Review(**request.get_json())
     review.place_id = place_id
     review.save()
