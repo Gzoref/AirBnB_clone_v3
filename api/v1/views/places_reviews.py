@@ -8,14 +8,15 @@ from models.user import User
 from models.place import Place
 from models.review import Review
 
+
 @app_views.route("/places/<place_id>/reviews", strict_slashes=False,
                  methods=['GET'])
 def get_reviews(place_id=None):
     """
-    Returns list of City objects linked to any State
+    Returns list of review objects linked to any place
 
-    with state_id: Returns a single state object
-    without state_id: 404
+    with place_id: Returns review objects
+    without place_id: 404
     """
     place = storage.get(Place, place_id)
     if place is None:
@@ -27,12 +28,12 @@ def get_reviews(place_id=None):
 
 
 @app_views.route("/reviews/<review_id>", strict_slashes=False, methods=['GET'])
-def get_review_id(review_id=None):
+def get_review_id(review_id):
     '''
-    Get city by city id
+    Get review by review id
     '''
     review = storage.get(Review, review_id)
-    if review_id is None or review is None:
+    if review is None:
         abort(404)
     return jsonify(review.to_dict())
 
@@ -58,18 +59,14 @@ def post_review(place_id=None):
     Post a review
     """
     req = request.get_json()
-    place_key = "Place." + str(state_id)
-    if place_key not in storage.all(Place).keys():
+    if storage.get(Place, place_id) is None:
         abort(404)
     if not req:
         abort(400, "Not a JSON")
     if "user_id" not in req:
         abort(400, "Missing user_id")
-
-    user_key = "User." + str(req["user_id"])
-    if user_key not in storage.all(User).keys():
+    if storage.get(User, req["user_id"]) is None:
         abort(404)
-
     if "text" not in req:
         abort(400, "Missing text")
 
@@ -87,7 +84,7 @@ def update_review(review_id=None):
     if key not in storage.all(Review).keys():
         abort(404)
     if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
+        abort(400, "Not a JSON")
 
     review = storage.get(Review, review_id)
     for key, value in request.get_json().items():
