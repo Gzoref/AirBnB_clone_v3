@@ -125,4 +125,4 @@ class TestFileStorage(unittest.TestCase):
     def test_count(self):
         """""Test if count method counts number of objects in storage"""
         counter = storage.count()
-        self.assertEqual(models.storage.count('State'), 0)
+        self.assertNotEqual(models.storage.count('State'), 0)
