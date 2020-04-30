@@ -32,7 +32,7 @@ def get_city_id(city_id):
     Get city by city id
     '''
     city = storage.get(City, city_id)
-    if city_id is None:
+    if city is None:
         abort(404)
     return jsonify(city.to_dict())
 
