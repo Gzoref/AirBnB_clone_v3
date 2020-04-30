@@ -58,7 +58,7 @@ def post_place(city_id):
     Post a Place
     """
     if storage.get(City, city_id) is None:
-        aborty(404)
+        abort(404)
     if not request.get_json():
         abort(400, "Not a JSON")
     if "user_id" not in request.get_json():
