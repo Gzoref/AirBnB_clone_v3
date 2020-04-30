@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" Lists reviews """
+""" Lists Place objects and Amenity objects """
 
 from flask import Flask, jsonify, abort, request, make_response
 from api.v1.views import app_views
@@ -72,5 +72,5 @@ def post_place_amenity(place_id=None, amenity_id=None):
         place.amenities.append(amenity)
     else:
         place.amenity_ids.append('Amenity.' + amenity_id)
-    storage.save()
+    place.save()
     return jsonify(amenity.to_dict()), 201
