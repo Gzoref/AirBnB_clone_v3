@@ -84,7 +84,7 @@ def update_review(review_id=None):
     if key not in storage.all(Review).keys():
         abort(404)
     if not request.get_json():
-        return jsonify({"error": "Not a JSON"}), 400
+        abort(400, "Not a JSON")
 
     review = storage.get(Review, review_id)
     for key, value in request.get_json().items():
