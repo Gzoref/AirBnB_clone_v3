@@ -96,18 +96,22 @@ class TestFileStorage(unittest.TestCase):
         self.assertEqual(models.storage.get(State, state.id), state)
         self.assertIsInstance(models.storage.get(State, state.id), State)
         self.assertEqual(models.storage.get(State, "68"), None)
+        self.assertNotEqual(models.storage.get(State, state.id), None)
 
         new_user = User(email="new@false.com", password="password")
         models.storage.new(new_user)
         models.storage.save()
         self.assertEqual(models.storage.get(User, new_user.id), new_user)
+        self.assertIsInstance(models.storage.get(User, new_user.id), User)
         self.assertIsNone(models.storage.get(User, "123454"))
+        self.assertNotEqual(models.storage.get(User, new_user.id), None)
 
         self.assertIsNone(models.storage.get(Place, "123454"))
         self.assertIsNone(models.storage.get(Review, "123454"))
         self.assertIsNone(models.storage.get(City, "12345"))
         self.assertIsNone(models.storage.get(Amenity, "123454"))
         state.delete()
+        new_user.delete()
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
@@ -122,3 +126,5 @@ class TestFileStorage(unittest.TestCase):
         self.assertIsInstance(models.storage.count(), int)
         self.assertIsInstance(models.storage.count(Amenity), int)
         self.assertNotEqual(models.storage.count(Amenity), None)
+        new_state.delete()
+        new_amenity.delete()
