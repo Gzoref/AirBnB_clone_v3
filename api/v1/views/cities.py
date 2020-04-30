@@ -62,7 +62,7 @@ def post_city(state_id=None):
     if not request.get_json():
         abort(400, "Not a JSON")
     if "name" not in request.get_json():
-            abort(400, "Missing name")
+        abort(400, "Missing name")
     city = City(**request.get_json())
     city.state_id = state_id
     city.save()
