@@ -92,10 +92,19 @@ class TestFileStorage(unittest.TestCase):
         """"Test if methods retieves one object"""
         state = State(name='Conencticut')
         state.save()
-        self.assertIs(state, models.storage.get('State', state.id))
+        self.assertIs(state, models.storage.get(State, state.id))
+        self.assertIsNone(models.storage.get(User, 123454))
+        self.assertIsNone(models.storage.get(Place, 123454))
+        self.assertIsNone(models.storage.get(Review, 123454))
+        self.assertIsNone(models.storage.get(Amenity, 123454))
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_count(self):
         """Test if count method counts number of objects in storage"""
         counter = models.storage.count()
-        self.assertNotEqual(models.storage.count('State'), 0)
+        new_state = State(name="California")
+        new_state.save()
+        self.assertNotEqual(models.storage.count(State), 0)
+        new_amenity = Amenity(name="Smoking allowed")
+        new_amenity.save()
+        self.assertNotEqual(models.storage.count(Amenity), 0)
