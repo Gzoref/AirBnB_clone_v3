@@ -57,12 +57,12 @@ def post_place(city_id):
     """
     Post a Place
     """
-    if storage.get(User, request.get_json["user_id"]) is None:
-        abort(404)
     if not request.get_json():
         abort(400, "Not a JSON")
     if "user_id" not in request.get_json():
         abort(400, "Missing user_id")
+    if storage.get(User, request.get_json["user_id"]) is None:
+        abort(404)
     if "name" not in request.get_json():
         abort(400, "Missing name")
     places = Place(**request.get_json())
