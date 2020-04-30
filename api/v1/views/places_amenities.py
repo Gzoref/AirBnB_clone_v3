@@ -27,7 +27,7 @@ def get_place_amenity(place_id=None):
             amenity_list.append(amenity.to_dict())
     else:
         for amenity in place.amenity_id:
-            amenity_list.append(amenity.to_dict())
+            amenity_list.append(storage.get(Amenity, amenity).to_dict())
     return jsonify(amenity_list)
 
 
@@ -66,6 +66,8 @@ def post_place_amenity(place_id=None, amenity_id=None):
         abort(404)
     if place is None:
         abort(404)
+    if amenity in place.amenities:
+        return jsonify(amenity.to_dict()), 200
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         place.amenities.append(amenity)
     else:
