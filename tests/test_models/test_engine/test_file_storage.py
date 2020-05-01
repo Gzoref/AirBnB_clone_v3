@@ -170,5 +170,6 @@ class TestFileStorage(unittest.TestCase):
         self.assertNotEqual(storage.count(State), count_s)
         self.assertIsInstance(storage.count(State), int)
         self.assertNotEqual(storage.count(), None)
+        self.assertEqual(storage.count(), storage.count(None))
         new_user.delete()
         new_state.delete()
