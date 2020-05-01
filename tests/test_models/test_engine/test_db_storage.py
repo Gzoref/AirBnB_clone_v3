@@ -119,6 +119,7 @@ class TestDBStorage(unittest.TestCase):
         new_state = State(name="California")
         new_state.save()
         self.assertNotEqual(models.storage.count(State), 0)
+        self.assertEqual(storage.count(Amenity), 1)
         new_amenity = Amenity(name="Smoking allowed")
         new_amenity.save()
         self.assertNotEqual(models.storage.count(Amenity), 0)
