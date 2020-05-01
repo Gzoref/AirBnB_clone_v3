@@ -68,7 +68,7 @@ test_db_storage.py'])
                             "{:s} method needs a docstring".format(func[0]))
 
 
-class TestFileStorage(unittest.TestCase):
+class TestDBStorage(unittest.TestCase):
     """Test the FileStorage class"""
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
@@ -91,25 +91,24 @@ class TestFileStorage(unittest.TestCase):
     def test_get(self):
         """"Test if methods retieves objects"""
         state = State(name="Alabama")
-        models.storage.new(state)
-        models.storage.save()
-        self.assertEqual(models.storage.get(State, state.id), state)
-        self.assertIsInstance(models.storage.get(State, state.id), State)
-        self.assertEqual(models.storage.get(State, "68"), None)
-        self.assertNotEqual(models.storage.get(State, state.id), None)
+        state.save()
+        found_state = models.storage.get(State, state.id)
+        wrong_state = models.storage.get(State, "70")
+        self.assertIs(found_state, state)
+        self.assertEqual(found_state, state)
+        self.assertIsInstance(found_state, State)
+        self.assertEqual(wrong_state, None)
+        self.assertNotEqual(found_state, None)
 
         new_user = User(email="new@false.com", password="password")
-        models.storage.new(new_user)
-        models.storage.save()
-        self.assertEqual(models.storage.get(User, new_user.id), new_user)
-        self.assertIsInstance(models.storage.get(User, new_user.id), User)
-        self.assertIsNone(models.storage.get(User, "123454"))
-        self.assertNotEqual(models.storage.get(User, new_user.id), None)
-
-        self.assertIsNone(models.storage.get(Place, "123454"))
-        self.assertIsNone(models.storage.get(Review, "123454"))
-        self.assertIsNone(models.storage.get(City, "12345"))
-        self.assertIsNone(models.storage.get(Amenity, "123454"))
+        new_user.save()
+        found_user = models.storage.get(User, new_user.id)
+        wrong_user = models.storage.get(User, "77")
+        self.assertEqual(found_user, new_user)
+        self.assertIs(found_user, new_user)
+        self.assertIsInstance(found_user, User)
+        self.assertIsNone(wrong_user)
+        self.assertNotEqual(found_user, None)
         state.delete()
         new_user.delete()
 
