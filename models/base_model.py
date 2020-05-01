@@ -6,6 +6,7 @@ Contains class BaseModel
 from datetime import datetime
 import models
 from os import getenv
+import inspect
 import sqlalchemy
 from sqlalchemy import Column, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
@@ -58,7 +59,7 @@ class BaseModel:
         models.storage.new(self)
         models.storage.save()
 
-    def to_dict(self, save_to_disk=False):
+    def to_dict(self):
         """returns a dictionary containing all keys/values of the instance"""
         new_dict = self.__dict__.copy()
         if "created_at" in new_dict:
@@ -68,8 +69,11 @@ class BaseModel:
         new_dict["__class__"] = self.__class__.__name__
         if "_sa_instance_state" in new_dict:
             del new_dict["_sa_instance_state"]
-        if "password" in new_dict and save_to_disk is False:
-            del new_dict["password"]
+        stack = inspect.stack()[1]
+        mod = inspect.getmodule(stack[0])
+        if mod.__name__ != "models.engine.file_storage":
+            if "password" in new_dict:
+                del new_dict["password"]
         return new_dict
 
     def delete(self):
