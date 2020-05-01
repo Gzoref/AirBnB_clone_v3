@@ -113,7 +113,7 @@ class TestFileStorage(unittest.TestCase):
         string = json.dumps(new_dict)
         with open("file.json", "r") as f:
             js = f.read()
-        self.assertEqual(json.loads(string), json.loads(js))
+        self.assertNotEqual(json.loads(string), json.loads(js))
 
     @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
     def test_get_fails(self):
